@@ -7,8 +7,11 @@ services:
             - 3306:3306
         volumes:
             - ./data/mariadb:/var/lib/mysql
-        env_file:
-            - ./app/env/.env
+        environment:
+            - MYSQL_ROOT_PASSWORD=test
+            - MYSQL_DATABASE=craftcms
+            - MYSQL_USER=craftcms
+            - MYSQL_PASSWORD=test
 
     nginx:
         build: ./nginx/
@@ -27,20 +30,21 @@ services:
             - mysql
         volumes_from:
             - app
-        env_file:
-            - ./app/env/.env
-            
+
+    # app:
+    #     build: ./app/
+
+    # phpmyadmin:
+    #     image: phpmyadmin/phpmyadmin
+    #     ports:
+    #         - 8080:80
+    #     links:
+    #         - mysql
+    #     environment:
+    #         PMA_HOST: mysql
+
     app:
         image: alpine:3.6
         volumes:
-            - ./app:/var/www/html
+            - ./app:/srv/www/craft
         command: "true"
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        ports:
-            - 8080:80
-        links:
-            - mysql
-        environment:
-            PMA_HOST: mysql
