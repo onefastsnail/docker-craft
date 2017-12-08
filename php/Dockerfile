@@ -19,4 +19,8 @@ RUN apt-get update && \
 
 RUN docker-php-ext-install pdo pdo_mysql zip
 
+RUN bash -c "curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer"
+
 COPY php.ini /usr/local/etc/php/
+
+WORKDIR /srv/www/craft
